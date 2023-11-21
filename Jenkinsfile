@@ -12,8 +12,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        echo "PORT: \${PORT}"
-                        echo "MONGODB_URI: \${MONGODB_URI}"
+                        docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW
+                        docker build . -t bismabaig/nodejs-app:$BRANCH_NAME-latest -t bismabaig/nodejs-app:$BRANCH_NAME-$BUILD_ID
+                        docker push bismabaig/nodejs-app:$BRANCH_NAME-latest
+                        docker push bismabaig/nodejs-app:$BRANCH_NAME-$BUILD_ID
                     '''
                 }
             }
@@ -21,7 +23,7 @@ pipeline {
     }
     post { 
         success {
-            echo 'Build success'   
+            sh "docker-compose up -d -e PORT=${PORT} -e MONGOURI=${MONGODB_URI}"
         }
         failure { 
             echo 'Build failed!'
