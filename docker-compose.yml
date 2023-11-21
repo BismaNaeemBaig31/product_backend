@@ -7,6 +7,6 @@ services:
     image: nodejs-app:latest
     environment:
       - PORT=${PORT}
-      - MONGODB_URI= ${MONGODB_URI}
+      - MONGODB_URI=${MONGODB_URI}
     ports:
       - "${PORT}:5000"
