@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'new_server'
+        label 'labk8z'
     }
     environment {
         DOCKER_CREDS = credentials('dockerhub_id')
