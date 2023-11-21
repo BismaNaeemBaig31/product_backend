@@ -23,7 +23,7 @@ pipeline {
     }
     post { 
         success {
-            sh "docker compose up -d -e PORT=${PORT} -e MONGOURI=${MONGODB_URI}"
+            sh "docker compose up -d "
         }
         failure { 
             echo 'Build failed!'
