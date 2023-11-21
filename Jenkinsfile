@@ -5,7 +5,7 @@ pipeline {
     environment {
         DOCKER_CREDS = credentials('dockerhub_id')
         PORT = '4040'
-        MONGODB_URI = "mongodb+srv://bismanaeembaig:6f5y6BoPibaoWFS5@cluster0.p5pxm7a.mongodb.net/?retryWrites=true&w=majority"
+        MONGODB_URI = credentials('product_dev')
     }
     stages {
         stage('Build') {
@@ -23,7 +23,7 @@ pipeline {
     }
     post { 
         success {
-            sh "docker compose up -d"
+            sh "docker compose up -d -e PORT=${PORT} -e MONGOURI=${MONGODB_URI}"
         }
         failure { 
             echo 'Build failed!'
