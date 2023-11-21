@@ -25,7 +25,7 @@ pipeline {
         success {
             sh ''' 
              echo 'PORT=${PORT} > .env' 
-             echo 'MONGOURI=${MONGODB_URI} > .env'
+             echo 'MONGODB_URI=${MONGODB_URI} > .env'
             docker compose up -d
             '''
         }
