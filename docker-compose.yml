@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
     image: nodejs-app:latest
     environment:
-      SERVER_PORT: '5000'
+      PORT='5000'
+      MONGODB_URI= ${MONGODB_URI}
     ports:
-      - "4040:5000"
+      - "${PORT}:5000"
