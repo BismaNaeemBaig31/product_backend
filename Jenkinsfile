@@ -4,8 +4,10 @@ pipeline {
     }
     environment {
         DOCKER_CREDS = credentials('dockerhub_id')
-        PORT = '4040'
-        MONGODB_URI = credentials('product_dev')
+        PORT_DEV = '4040'
+        MONGODB_URI_DEV = credentials('product_dev')
+        PORT_PROD = '5050'
+        MONGODB_URI_PROD = credentials('product_prod')
     }
     stages {
         stage('Build') {
@@ -23,11 +25,20 @@ pipeline {
     }
     post { 
         success {
-            sh ''' 
-             echo  "PORT=${PORT}" >> .env 
-             echo "MONGODB_URI=${MONGODB_URI}" >> .env
-            docker compose up -d
-            '''
+            script {
+                if (BRANCH_NAME == 'dev') {
+                    sh '''
+                        echo "PORT=${PORT_DEV}" >> .env 
+                        echo "MONGODB_URI=${MONGODB_URI_DEV}" >> .env
+                    '''
+                } else {
+                    sh '''
+                        echo "PORT=${PORT_PROD}" >> .env 
+                        echo "MONGODB_URI=${MONGODB_URI_PROD}" >> .env
+                    '''
+                }
+                sh 'docker compose up -d'
+            }
         }
         failure { 
             echo 'Build failed!'
