@@ -9,4 +9,4 @@ services:
       - PORT=${PORT}
       - MONGODB_URI=${MONGODB_URI}
     ports:
-      - "${PORT}:5000"
+      - "${PORT}:${PORT}"
